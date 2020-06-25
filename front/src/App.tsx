@@ -1,26 +1,94 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import {
+  Container,
+  CssBaseline,
+  Grid,
+  makeStyles,
+  List,
+  ListSubheader,
+  ListItem,
+  ListItemText,
+} from "@material-ui/core";
+import { Send as SendIcon } from "@material-ui/icons";
+import red from "@material-ui/core/colors/red";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+interface Props {}
+const useStyles = makeStyles((theme) => ({
+  list: {
+    backgroundColor: theme.palette.grey[500],
+  },
+}));
+interface Bus {
+  name: string;
+  selected: boolean;
 }
+interface Hitchhiker {
+  name: string;
+}
+
+const App: React.FC<Props> = (props) => {
+  const classes = useStyles();
+  const [chatBus, setChatBus] = useState<Bus[]>([]);
+  const [hitchhikers, setHitchhikers] = useState<Hitchhiker[]>([]);
+
+  useEffect(() => {
+    setChatBus([
+      { name: "tan", selected: false },
+      { name: "baka", selected: false },
+      { name: "ID", selected: true },
+    ]);
+    setHitchhikers([
+      { name: "user01" },
+      { name: "user02" },
+      { name: "user03" },
+    ]);
+  }, [props]);
+  return (
+    <Container component="main" maxWidth="xl">
+      <CssBaseline />
+      <Grid container spacing={3}>
+        <Grid item xs={3} className={classes.list}>
+          <List
+            component="nav"
+            aria-labelledby="nested-list-subheader"
+            subheader={
+              <ListSubheader component="div" id="nested-list-subheader">
+                <SendIcon />
+                Chatbus
+              </ListSubheader>
+            }
+          >
+            {chatBus.map((bus) => (
+              <ListItem button>
+                <ListItemText primary={bus.name} />
+              </ListItem>
+            ))}
+          </List>
+        </Grid>
+        <Grid item xs={6}>
+          Main
+        </Grid>
+        <Grid item xs={3} className={classes.list}>
+          <List
+            component="nav"
+            aria-labelledby="nested-list-subheader"
+            subheader={
+              <ListSubheader component="div" id="nested-list-subheader">
+                <SendIcon />
+                hitchhikers
+              </ListSubheader>
+            }
+          >
+            {hitchhikers.map((h) => (
+              <ListItem button>
+                <ListItemText primary={h.name} />
+              </ListItem>
+            ))}
+          </List>
+        </Grid>
+      </Grid>
+    </Container>
+  );
+};
 
 export default App;
